@@ -49,6 +49,9 @@ from transformers.trainer_utils import get_last_checkpoint
 from transformers.utils import check_min_version
 from transformers.utils.versions import require_version
 
+# remove MLflowCalback temporarily
+from transformers.integrations import MLflowCallback
+
 
 # Will error if the minimal version of Transformers is not installed. Remove at your own risks.
 check_min_version("4.10.0.dev0")
@@ -526,6 +529,7 @@ def main():
         data_collator=data_collator,
         compute_metrics=compute_metrics if training_args.predict_with_generate else None,
     )
+    trainer.callback_handler.remove_callback(MLflowCallback)
 
     # Training
     if training_args.do_train:
